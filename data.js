@@ -1,15 +1,16 @@
 const mongoose = require("mongoose");
+const ejs = require("ejs");
 
-exports.cmongoose = () => {
+exports.connectMongoose = () => {
   mongoose
-    .connect("mongodb://localhost:27017/test")
+    .connect("mongodb://localhost:27017/Passport")
     .then((e) => console.log(`connect to mongodb : ${e.connection.host}`))
     .catch((e) => console.log(e));
 };
 
 const userSchema = new mongoose.Schema({
   name: String,
-  usernaeme: {
+  username: {
     type: String,
     require: true,
     unique: true,
@@ -17,4 +18,4 @@ const userSchema = new mongoose.Schema({
   password: String,
 });
 
-exports.user = mongoose.model("user", userSchema);
+exports.User = mongoose.model("User", userSchema);

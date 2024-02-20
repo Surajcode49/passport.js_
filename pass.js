@@ -1,28 +1,37 @@
 const express = require("express");
-const { cmongoose, user } = require("./data.js");
-
-const port = 4700;
+const ejs = require("ejs");
 const app = express();
+const port = 5000;
 
-app.use (express.json());
-app.use(express.urlencoded({extended:true}));
+const { connectMongoose, User } = require("./data.js");
 
-cmongoose();
+connectMongoose();
 
-app.get("/new", (req, res) => {
-  res.send("hii this is suraj");
-});
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.set("view engine", "ejs");
 
 app.post("/register", async (req, res) => {
   const user = await User.findOne({ username: req.body.username });
 
-  if (user) return res.status(400).send("user already exists");
+  if (user) return res.status(400).send("User already exists");
 
   const newUser = await User.create(req.body);
 
   res.status(201).send(newUser);
 });
 
-app.listen(4700, (req, res) => {
-  console.log(`server is running bro at ${port}`);
+app.get("/", (req, res) => {
+  res.render("index");
+});
+app.get("/register", (req, res) => {
+  res.render("register");
+});
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.listen(5000, (req, res) => {
+  console.log(`server is runnig bro ! ${port} `);
 });
